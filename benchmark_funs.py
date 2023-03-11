@@ -55,9 +55,9 @@ class BenchmarkFunction(nn.Module):
 class Sphere(BenchmarkFunction):
     """Sphere Model"""
 
-    def __init__(self):
+    def __init__(self, dimension: int = 30):
         super().__init__()
-        self.dimension: int = 30
+        self.dimension: int = dimension
         self.lb: float = -100  # 简化为一个数
         self.ub: float = 100
         self.optinum: torch.Tensor = torch.zeros(self.dimension)
@@ -70,9 +70,9 @@ class Sphere(BenchmarkFunction):
 class Rosenbrock(BenchmarkFunction):
     """Rosenbrock's Function"""
 
-    def __init__(self):
+    def __init__(self, dimension: int = 30):
         super().__init__()
-        self.dimension: int = 30
+        self.dimension: int = dimension
         self.lb: float = -30  # 简化为一个数
         self.ub: float = 30
         self.optinum: torch.Tensor = torch.zeros(self.dimension)
@@ -85,9 +85,9 @@ class Rosenbrock(BenchmarkFunction):
 class Step(BenchmarkFunction):
     """Step Function"""
 
-    def __init__(self):
+    def __init__(self, dimension: int = 30):
         super().__init__()
-        self.dimension: int = 30
+        self.dimension: int = dimension
         self.lb: float = -100  # 简化为一个数
         self.ub: float = 100
         self.optinum: torch.Tensor = torch.zeros(self.dimension)
@@ -100,9 +100,9 @@ class Step(BenchmarkFunction):
 class NoisyQuartic(BenchmarkFunction):
     """Noisy Quartic"""
 
-    def __init__(self):
+    def __init__(self, dimension: int = 30):
         super().__init__()
-        self.dimension: int = 30
+        self.dimension: int = dimension
         self.lb: float = -1.28  # 简化为一个数
         self.ub: float = 1.28
         self.optinum: torch.Tensor = torch.zeros(self.dimension)
@@ -116,9 +116,9 @@ class NoisyQuartic(BenchmarkFunction):
 class Schwefel226(BenchmarkFunction):
     """Schwefel's Problem 2.26"""
 
-    def __init__(self):
+    def __init__(self, dimension: int = 30):
         super().__init__()
-        self.dimension: int = 30
+        self.dimension: int = dimension
         self.lb: float = -500  # 简化为一个数
         self.ub: float = 500
         self.optinum: torch.Tensor = 420.9687*torch.ones(self.dimension)
@@ -132,9 +132,9 @@ class Schwefel226(BenchmarkFunction):
 class Ackley(BenchmarkFunction):
     """Ackley"""
 
-    def __init__(self):
+    def __init__(self, dimension: int = 30):
         super().__init__()
-        self.dimension: int = 30
+        self.dimension: int = dimension
         self.lb: float = -32  # 简化为一个数
         self.ub: float = 32
         self.optinum: torch.Tensor = torch.zeros(self.dimension)
@@ -149,9 +149,9 @@ class Ackley(BenchmarkFunction):
 class Schwefel222(BenchmarkFunction):
     """Schwefel's Problem 2.22"""
 
-    def __init__(self):
+    def __init__(self, dimension: int = 30):
         super().__init__()
-        self.dimension: int = 30
+        self.dimension: int = dimension
         self.lb: float = -10  # 简化为一个数
         self.ub: float = 10
         self.optinum: torch.Tensor = torch.zeros(self.dimension)
@@ -165,9 +165,9 @@ class Schwefel222(BenchmarkFunction):
 class Holder(BenchmarkFunction):
     """Holder Table"""
 
-    def __init__(self):
+    def __init__(self, dimension: int = 2):
         super().__init__()
-        self.dimension: int = 2
+        self.dimension: int = dimension
         self.lb: float = -10  # 简化为一个数
         self.ub: float = 10
         self.optinum: torch.Tensor = torch.Tensor([8.05502, 9.66459])
@@ -183,9 +183,9 @@ class Holder(BenchmarkFunction):
 class Camel3(BenchmarkFunction):
     """Three Hump Camel"""
 
-    def __init__(self):
+    def __init__(self, dimension: int = 2):
         super().__init__()
-        self.dimension: int = 2
+        self.dimension: int = dimension
         self.lb: float = -5  # 简化为一个数
         self.ub: float = 5
         self.optinum: torch.Tensor = torch.zeros(self.dimension)
@@ -200,9 +200,9 @@ class Camel3(BenchmarkFunction):
 class Michal(BenchmarkFunction):
     """Michalewicz"""
 
-    def __init__(self, m=10):
+    def __init__(self, dimension: int = 2, m:int =10):
         super().__init__()
-        self.dimension: int = 2
+        self.dimension: int = dimension
         self.lb: float = 0  # 简化为一个数
         self.ub: float = torch.pi
         self.optinum: torch.Tensor = torch.Tensor([2.20, 1.57])

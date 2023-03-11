@@ -123,6 +123,9 @@ class StudentTInitialization(EvolvingOperator):
 
         return y, _h, 0
 
+# # TODO 整体的一个初始化算子，可以接受h里面的参数，来决定使用哪种初始化算子。
+# class Initialization(EvolvingOperator):
+#     pass
 
 strategies = [lambda p: UniformInitialization(p),
               lambda p: NormalInitialization(p, set_hyper_hyper_param(
