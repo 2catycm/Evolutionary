@@ -110,7 +110,7 @@ class NoisyQuartic(BenchmarkFunction):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
 
-        return torch.sum(torch.arange(1, x.shape[1]+1).to(self.get_device())*x**4+torch.rand(1).to(self.get_device()), dim=1)
+        return torch.sum(torch.arange(1, x.shape[1]+1).to(x.device)*x**4+torch.rand(1).to(x.device), dim=1)
 
 
 class Schwefel226(BenchmarkFunction):
@@ -211,7 +211,7 @@ class Michal(BenchmarkFunction):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         y = torch.sin(x) * torch.sin(torch.arange(1,
-                                                  x.shape[1]+1).to(self.get_device())*x**2 / torch.pi)**(2 * self.m)
+                                                  x.shape[1]+1).to(x.device)*x**2 / torch.pi)**(2 * self.m)
         return -torch.sum(y, dim=1)
 
 
