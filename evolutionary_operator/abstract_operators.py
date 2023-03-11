@@ -27,6 +27,10 @@ hyper_hyper_dimension = len(hyper_hyper_param_names)
 def get_hyper_hyper_param(h: torch.Tensor, name: str):
     return h[hyper_hyper_param_dict[name]]
 
+def set_hyper_hyper_param(h: torch.Tensor, name: str, value:float):
+    h[hyper_hyper_param_dict[name]] = value
+    return h
+
 # 演化算子
 class EvolvingOperator(nn.Module):
     """Some Information about EvolvingOperator"""
