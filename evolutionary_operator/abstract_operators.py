@@ -71,3 +71,10 @@ class EvolvingOperator(nn.Module):
 
     def get_device(self) -> torch.device:
         return self._device_test.device
+
+
+class EvolvingAlgorithm(EvolvingOperator):
+    """演化算法是特殊的进化算子，直接通过问题构造，然后凭空输出一个最优解的种群。
+    """
+    pass
+        
