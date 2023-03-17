@@ -3,21 +3,22 @@ from pathlib import Path
 import torch.nn as nn
 import torch
 import integer_funs
+import abstract_algorithms
 from scipy.stats import mannwhitneyu
 from matplotlib import pyplot as plt
 
 # plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
 # plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
-plt.rcParams['axes.facecolor']='black'
+# plt.rcParams['axes.facecolor']='black'
 
 _current_time = lambda : f"_{datetime.now().strftime('%Y-%m-%d-%H-%M')}"
 
-class StudentExperimenet(nn.Module):
-    """Some Information about StudentExperimenet"""
+class StudentExperiment(abstract_algorithms.EvolvingAlgorithm):
+    """学生实验算法，用于控制变量做实验。"""
     def __init__(self, problem:integer_funs.IntegerBenchmarkFunction, k_round:int=5, experiment_times:int=5,
                  draw_prob:float=1,  draw_path:str="runs/", 
                  xnames=None):
-        super().__init__()
+        super().__init__(problem)
         self.problem:integer_funs.IntegerBenchmarkFunction = problem
         self.k_round:int = k_round
         self.experiment_times:int = experiment_times

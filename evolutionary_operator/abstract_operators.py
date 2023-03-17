@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Union
 import torch
 import torch.nn as nn
 import warnings
@@ -13,10 +13,15 @@ hyper_dimension = len(hyper_param_names)
 
 def get_hyper_param(h: torch.Tensor, name: str):
     return h[:, hyper_param_dict[name]]
+def set_hyper_param(h: torch.Tensor, name: str, value:Union[torch.Tensor, float]):
+    h[:, hyper_param_dict[name]] = value
+    return h
 
 # 超超参数
 hyper_hyper_param_names = ['initialization_strategy', 'mutation_strategy', 'selection_strategy', 'hyper_init_strategy', 'hyper_update_strategy',
                            'resample_if_bound', 'init_pop_std_dev_ratio',  # initialization_strategy 需要的超参数
+                           'opponents_ratio', # selection_strategy 需要的超参数
+                           'alpha', 'beta' # 
                            ]
 hyper_hyper_param_is_real = [False, False, False, False, False,
                              False, True]
@@ -24,12 +29,19 @@ hyper_hyper_param_dict = {k: v for v, k in enumerate(hyper_hyper_param_names)}
 hyper_hyper_dimension = len(hyper_hyper_param_names)
 
 
-def get_hyper_hyper_param(h: torch.Tensor, name: str):
-    return h[hyper_hyper_param_dict[name]]
+def get_hyper_hyper_param(hh: torch.Tensor, name: str):
+    return hh[hyper_hyper_param_dict[name]]
 
-def set_hyper_hyper_param(h: torch.Tensor, name: str, value:float):
-    h[hyper_hyper_param_dict[name]] = value
-    return h
+def set_hyper_hyper_param(hh: torch.Tensor, name: str, value:float):
+    hh[hyper_hyper_param_dict[name]] = value
+    return hh
+
+def hyper_hyper_param_from_dict(d: dict):
+    hh = torch.zeros(hyper_hyper_dimension)
+    for k, v in d.items():
+        set_hyper_hyper_param(hh, k, v)
+    return hh
+
 
 # 演化算子
 class EvolvingOperator(nn.Module):
@@ -71,6 +83,9 @@ class EvolvingOperator(nn.Module):
 
     def get_device(self) -> torch.device:
         return self._device_test.device
+    
+    def __str__(self) -> str:
+        return f"{super().__str__()}{self.name}:({self.__dir__()})"
 
 
 class EvolvingAlgorithm(EvolvingOperator):

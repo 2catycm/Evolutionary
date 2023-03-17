@@ -155,3 +155,5 @@ strategies = [lambda p: UniformInitialization(p),
               ]
 strategy_names = ['均匀分布', '正态分布1置信区间', '正态分布0.5置信区间', '正态分布0.25置信区间', '柯西分布1/4位距',
                           '柯西分布1/16位距', '柯西分布1/64位距',  't分布0.75自由度',  't分布2自由度', 't分布1自由度', 't分布0.25自由度', ]
+
+assert len(strategies) == len(strategy_names)

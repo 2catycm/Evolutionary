@@ -125,3 +125,5 @@ class StudentTMutation(EvolvingOperator):
 
 strategies = [UniformReset, NormalMutation, CauthyMutation, StudentTMutation]
 strategy_names = ["均匀分布重置", "高斯移动", "柯西移动", "t移动"]
+
+assert len(strategies) == len(strategy_names)

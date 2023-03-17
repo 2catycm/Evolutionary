@@ -64,3 +64,5 @@ strategies = [
         problem, hyper_hyper_param_from_dict({'opponents_ratio': 0.05})),
 ]
 strategy_names = ["锦标赛q=1", "锦标赛q=0.75", "锦标赛q=0.5", "锦标赛q=0.25", "锦标赛q=0.1", "锦标赛q=0.05"]
+
+assert len(strategies) == len(strategy_names)
