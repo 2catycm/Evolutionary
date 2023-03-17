@@ -16,6 +16,7 @@ class BenchmarkFunction(nn.Module):
         self.ub: float = 0
         self.optinum: torch.Tensor = torch.zeros(self.dimension)
         self.optival: float = 0
+        self.larger_better: bool = False
         self._device_test = nn.Parameter(torch.rand(1))  # 用于测试device
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -52,6 +53,24 @@ class BenchmarkFunction(nn.Module):
         return self.dimension*alpha
 
 
+class NegativeProxyObjective(BenchmarkFunction):
+    """Convert an maximization problem to a minimization problem, or vice versa. """
+
+    def __init__(self, bf: BenchmarkFunction):
+        super().__init__()
+        self.bf = bf
+        self.name = bf.name
+        self.description = bf.description
+        self.dimension = bf.dimension
+        self.lb = bf.lb 
+        self.ub = bf.ub
+        self.optinum = bf.optinum
+        self.optival = -bf.optival
+        self.larger_better = not bf.larger_better
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return -self.bf(x)
+    
 class Sphere(BenchmarkFunction):
     """Sphere Model"""
 

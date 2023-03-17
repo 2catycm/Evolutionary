@@ -24,3 +24,4 @@ class LargestSum(IntegerBenchmarkFunction):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return torch.sum(x, dim=1)
+    

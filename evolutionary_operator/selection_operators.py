@@ -40,7 +40,7 @@ class TournamentSelection(EvolvingOperator):
         for i in range(opponents_num):
             opponents = torch.randint(
                 0, overloaded_population_size, (overloaded_population_size,), device=x.device)
-            wins += (fitnesses < fitnesses[opponents])
+            wins += (fitnesses > fitnesses[opponents])
         # winners = torch.argsort(wins, descending=True)[:population_size]
         # 使用topk比argsort快
         winners = torch.topk(wins, population_size,

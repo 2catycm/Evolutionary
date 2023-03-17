@@ -88,8 +88,4 @@ class EvolvingOperator(nn.Module):
         return f"{super().__str__()}{self.name}:({self.__dir__()})"
 
 
-class EvolvingAlgorithm(EvolvingOperator):
-    """演化算法是特殊的进化算子，直接通过问题构造，然后凭空输出一个最优解的种群。
-    """
-    pass
         

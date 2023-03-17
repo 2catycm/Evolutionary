@@ -43,6 +43,8 @@ class StudentExperiment(abstract_algorithms.EvolvingAlgorithm):
         # best_hh, best_fitness = hh, torch.Tensor([self.problem(hh) for _ in range(self.experiment_times)])
         best_hh, best_fitness = hh, -torch.inf*torch.ones(self.experiment_times) # 不做评估，节省时间。
         
+        best_fitness_avgs = torch.zeros(self.k_round*self.problem.dimension)
+        
         for round in range(self.k_round):
             for i in range(self.problem.dimension):
                 hh = best_hh # 下一轮从上一轮最优秀的开始。
@@ -62,7 +64,7 @@ class StudentExperiment(abstract_algorithms.EvolvingAlgorithm):
                     else:
                         if torch.mean(fitness[j, :])>torch.mean(best_fitness):
                             best_fitness = fitness[j]
-                            best_hh = hh
+                            best_hh = hh.clone()
                     
                 # print(f"\t控制变量为{[i.item() for i in hh[0, :]]}时，探究变量{i}对因变量的影响。")
                 # print(f"\t实验结论：变量{i}最好取{best_hh[0, i].item()}， 此时fitness平均为{torch.mean(fitness[best_hh[0, i], :]).item()}")
@@ -81,10 +83,11 @@ class StudentExperiment(abstract_algorithms.EvolvingAlgorithm):
                     plt.title(f"When vars={[i.item() for i in hh[0, :]]}\nExplores the influence of var{i} on fitness")
                     plt.savefig(Path(self.draw_path)/f"{self.problem.name}_round{round}_var{i}{_current_time()}.png")     
                     plt.close()
+                best_fitness_avgs[round*self.problem.dimension+i] = torch.mean(best_fitness)
                                
             print(f"第{round}轮实验, fitness平均为{torch.mean(best_fitness).item()}")
 
                 
-        return best_hh, best_fitness
+        return best_hh[0], best_fitness_avgs
                     
                     
