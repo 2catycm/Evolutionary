@@ -1,5 +1,6 @@
 from datetime import datetime
 from pathlib import Path
+from matplotlib.font_manager import FontProperties
 import torch.nn as nn
 import torch
 import integer_funs
@@ -10,6 +11,11 @@ from matplotlib import pyplot as plt
 # plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
 # plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 # plt.rcParams['axes.facecolor']='black'
+this_file = Path(__file__).resolve()
+this_directory = this_file.parent
+project_directory = this_directory.parent
+font = FontProperties(fname=project_directory/"fonts/SimHei.ttf")
+
 
 _current_time = lambda : f"_{datetime.now().strftime('%Y-%m-%d-%H-%M')}"
 
@@ -17,7 +23,7 @@ class StudentExperiment(abstract_algorithms.EvolvingAlgorithm):
     """学生实验算法，用于控制变量做实验。"""
     def __init__(self, problem:integer_funs.IntegerBenchmarkFunction, k_round:int=5, experiment_times:int=5,
                  draw_prob:float=1,  draw_path:str="runs/", 
-                 xnames=None):
+                 xnames=None, varname=None, fitness_name:str="fitness"):
         super().__init__(problem)
         self.problem:integer_funs.IntegerBenchmarkFunction = problem
         self.k_round:int = k_round
@@ -25,6 +31,8 @@ class StudentExperiment(abstract_algorithms.EvolvingAlgorithm):
         self.draw_path:str = draw_path
         self.draw_prob:float = draw_prob
         self.xnames = xnames
+        self.varname = varname or {i:f"var{i}" for i in range(problem.dimension)}
+        self.fitness_name = fitness_name
 
     def forward(self, hh = None):
         """开始控制变量做实验。
@@ -76,12 +84,15 @@ class StudentExperiment(abstract_algorithms.EvolvingAlgorithm):
                     plt.figure()
                     plt.scatter(x, fitness, c='lawngreen', marker='x')
                     plt.plot(x, fitness, c='salmon')
-                    plt.xlabel(f"Variable{i}")
-                    plt.ylabel("fitness")
+                    # 避免图画的不好，以后可以重新画
+                    torch.save((x, fitness), Path(self.draw_path)/f"{self.problem.name}_round{round}_{self.varname[i]}{_current_time()}.pt")
+                    plt.xlabel(f"{self.varname[i]}", fontproperties=font)
+                    plt.ylabel(f"{self.fitness_name}", fontproperties=font)
                     if self.xnames is not None:
-                        plt.xticks(x, self.xnames[i])
-                    plt.title(f"When vars={[i.item() for i in hh[0, :]]}\nExplores the influence of var{i} on fitness")
-                    plt.savefig(Path(self.draw_path)/f"{self.problem.name}_round{round}_var{i}{_current_time()}.png")     
+                        plt.xticks(x, self.xnames[i], fontproperties=font) # 中文显示
+                    # plt.title(f"When vars={[i.item() for i in hh[0, :]]}\nExplores the influence of {self.varname[i]} on {self.fitness_name}")
+                    plt.title(f"控制变量为{[i.item() for i in hh[0, :]]}时，\n探究自变量“{self.varname[i]}”对因变量“{self.fitness_name}”的影响", fontproperties=font)
+                    plt.savefig(Path(self.draw_path)/f"{self.problem.name}_round{round}_{self.varname[i]}{_current_time()}.png")     
                     plt.close()
                 best_fitness_avgs[round*self.problem.dimension+i] = torch.mean(best_fitness)
                                

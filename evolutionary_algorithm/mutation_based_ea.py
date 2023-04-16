@@ -69,6 +69,8 @@ class BestMutationBasedEA(IntegerBenchmarkFunction):
          eo.hyper_init_operators.strategy_names,
         eo.hyper_update_operators.strategy_names
         ]
+        self.varname = ["初始化策略", "变异策略", "选择策略", "超参初始化策略", "超参更新策略"]
+        self.fitness_name = "S1适应度"
         
         self.dataset:List[bf.BenchmarkFunction] = dataset
         self.dimension: int = len(self.xnames)
